@@ -52,27 +52,32 @@ int main()
 	char file_name[] = "C:\\Users\\aleks\\Desktop\\graph\\graph.dot";
 	
 	
-	FILE* file;
-	if (!(file = fopen(file_name, "w")))
-	{
-		perror("fopen");
-		system("pause");
-		system("cls");
-		return NULL;
-	}
+	
 
 	char*** graph = (char***)malloc(sizeof(char**));
 	int* graph_len = (int*)malloc(sizeof(int));
 
-	
 	printf("Ввести узел графа?\n\nДа - 1\n\nНет - 0\n\nОтвет: ");
 	int answ;
 	scanf("%d", &answ);
-	int i = 0;
+	
+	FILE* file = NULL;
+
 	if (answ == 1)
 	{
+		if (!(file = fopen(file_name, "w")))
+		{
+			perror("fopen");
+			system("pause");
+			system("cls");
+			return NULL;
+		}
+
 		fprintf(file, "strict graph\n{");
 	}
+
+
+	int i = 0;
 	while (answ)
 	{
 		if (answ == 1)
@@ -102,6 +107,7 @@ int main()
 			++i;
 			printf("\nВвести еще один узел графа?\n\nДа - 1\n\nНет - 0\n\nОтвет: ");
 			scanf("%d", &answ);
+
 			if (!answ)
 			{
 				fprintf(file, "\n}");

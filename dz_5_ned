@@ -1,0 +1,131 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
+#include <Windows.h>
+#include <stdlib.h>
+#include <cstdlib>
+#include <stdio.h>
+
+
+char** get_strict_graph( int* num)
+{
+	*num = 0;
+	//printf("Введите первым узел графа №%d, а затем его связи (пример a,b,c,d): ", graph_num);
+	
+	char** graph = (char**)malloc(sizeof(char*));
+	char c = getchar();
+
+	graph[*num] = (char*)malloc(sizeof(char));
+	while (c != ';')
+	{
+		int k = 0;
+		while (c != ',' && c != ';')
+		{
+
+			graph[*num][k] = c;
+
+			graph[*num] = (char*)realloc(graph[*num], sizeof(char) * (++k + 1));
+
+
+			c = getchar();
+
+		}
+		graph[*num][k] = '\0';
+
+		if (c == ';')
+			break;
+
+		graph = (char**)realloc(graph, sizeof(char*) * (++ * num + 1));
+		graph[*num] = (char*)malloc(sizeof(char));
+		c = getchar();
+	}
+
+	
+	return graph;
+}
+
+int main()
+{
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	char file_name[] = "C:\\Users\\aleks\\Desktop\\graph\\graph.dot";
+	
+	
+	FILE* file;
+	if (!(file = fopen(file_name, "w")))
+	{
+		perror("fopen");
+		system("pause");
+		system("cls");
+		return NULL;
+	}
+
+	char*** graph = (char***)malloc(sizeof(char**));
+	int* graph_len = (int*)malloc(sizeof(int));
+
+	
+	printf("Ввести узел графа?\n\nДа - 1\n\nНет - 0\n\nОтвет: ");
+	int answ;
+	scanf("%d", &answ);
+	int i = 0;
+	if (answ == 1)
+	{
+		fprintf(file, "strict graph\n{");
+	}
+	while (answ)
+	{
+		if (answ == 1)
+		{
+			while (getchar() != '\n');
+			system("cls");
+			printf("Введите первым узел графа, а затем его связи (пример a,b,c,d;)\n\nВвод: ");
+			graph[i] = get_strict_graph(&graph_len[i]);
+			graph_len = (int*)realloc(graph_len, sizeof(int) * (i + 2));
+			graph = (char***)realloc(graph, sizeof(char**) * (i + 2));
+
+			for (int j = 0; j <= graph_len[i]; ++j)
+			{
+				if (j == 0)
+				{
+					fprintf(file, "\n%s -- {", graph[i][j]);
+				}
+				else if (j != graph_len[i])
+				{
+					fprintf(file, "%s ", graph[i][j]);
+				}
+				else
+				{
+					fprintf(file, "%s};", graph[i][j]);
+				}
+			}
+			++i;
+			printf("\nВвести еще один узел графа?\n\nДа - 1\n\nНет - 0\n\nОтвет: ");
+			scanf("%d", &answ);
+			if (!answ)
+			{
+				fprintf(file, "\n}");
+				fclose(file);
+
+				system("dot -Tpng C:\\Users\\aleks\\Desktop\\graph\\graph.dot -o C:\\Users\\aleks\\Desktop\\graph\\graph.png");
+				system("C:\\Users\\aleks\\Desktop\\graph\\graph.png");
+				system("pause");
+
+			}
+		}
+		else
+		{
+			while (getchar() != '\n');
+			printf("\nТакой команды нет!\n\nПопробуйте еще раз!\n\n");
+			system("pause");
+			system("cls");
+			printf("Ввести узел графа?\n\nДа - 1\n\nНет - 0\n\nОтвет: ");
+			scanf("%d", &answ);
+		}
+
+	}
+
+	return 0;
+}
+
+

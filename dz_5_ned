@@ -7,11 +7,74 @@
 #include <stdio.h>
 
 
-char** get_strict_graph( int* num)
+int str_cmp(char* a, char* b)
+{
+	int k = 1;
+	for (int i = 0; a[i] != '\0' || b[i] != '\0'; ++i)
+	{
+		if (a[i] != b[i])
+		{
+			k = 0;
+			break;
+		}
+	}
+	return k;
+}
+
+void check_con_graph(char*** graph, int* graph_len, int len)
+{
+
+	int* check = (int*)malloc(sizeof(int) * len);
+	check = {};
+	check[0] = 1;
+	int k = 1;// если все элементы проверены то = 0
+	while (k)
+	{
+
+	}
+}
+
+char** kek(int* mass_len, char** mass, char** str, int str_len)
+{
+	for (int i = 0; i <= str_len; ++i)
+	{
+		if (*mass_len = 0)
+		{
+			mass[*mass_len] = str[*mass_len];
+			mass = (char**)realloc(mass, sizeof(char*) * (++ * mass_len + 1));
+			mass[*mass_len] = (char*)malloc(sizeof(char));
+			
+		}
+		else
+		{
+			int z = 1;
+			for (int j = 0; j < *mass_len; ++j)
+			{
+				if (str_cmp(str[i], mass[j]))// 1 если равны
+				{
+					z = 0;
+					break;
+				}
+			}
+
+			if (z) // если узла str[i] еще нет в mass то записываем его 
+			{
+				mass[*mass_len] = str[i];
+				mass = (char**)realloc(mass, sizeof(char*) * (++ * mass_len + 1));
+				mass[*mass_len] = (char*)malloc(sizeof(char));
+			}
+		}
+
+
+	}
+	return mass;
+}
+
+char** get_strict_graph(int* num)
 {
 	*num = 0;
 	//printf("Введите первым узел графа №%d, а затем его связи (пример a,b,c,d): ", graph_num);
-	
+
 	char** graph = (char**)malloc(sizeof(char*));
 	char c = getchar();
 
@@ -40,7 +103,7 @@ char** get_strict_graph( int* num)
 		c = getchar();
 	}
 
-	
+
 	return graph;
 }
 
@@ -49,10 +112,10 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
-	char file_name[] = "C:\\Users\\aleks\\Desktop\\graph\\graph.dot";
-	
-	
-	
+	char file_name[] = "C:\\Users\\Александр\\Desktop\\graph\\graph.dot";
+
+
+
 
 	char*** graph = (char***)malloc(sizeof(char**));
 	int* graph_len = (int*)malloc(sizeof(int));
@@ -60,7 +123,7 @@ int main()
 	printf("Ввести узел графа?\n\nДа - 1\n\nНет - 0\n\nОтвет: ");
 	int answ;
 	scanf("%d", &answ);
-	
+
 	FILE* file = NULL;
 
 	if (answ == 1)
@@ -73,8 +136,12 @@ int main()
 			return NULL;
 		}
 
-		fprintf(file, "strict graph\n{");
+		fprintf(file, "graph\n{");
 	}
+
+	char** mass = (char**)malloc(sizeof(char*));
+	mass[0] = (char*)malloc(sizeof(char));
+	int mass_len = 0;
 
 
 	int i = 0;
@@ -86,6 +153,9 @@ int main()
 			system("cls");
 			printf("Введите первым узел графа, а затем его связи (пример a,b,c,d;)\n\nВвод: ");
 			graph[i] = get_strict_graph(&graph_len[i]);
+
+			mass = kek(&mass_len, mass, graph[i], graph_len[i]);
+
 			graph_len = (int*)realloc(graph_len, sizeof(int) * (i + 2));
 			graph = (char***)realloc(graph, sizeof(char**) * (i + 2));
 
@@ -113,8 +183,10 @@ int main()
 				fprintf(file, "\n}");
 				fclose(file);
 
-				system("dot -Tpng C:\\Users\\aleks\\Desktop\\graph\\graph.dot -o C:\\Users\\aleks\\Desktop\\graph\\graph.png");
-				system("C:\\Users\\aleks\\Desktop\\graph\\graph.png");
+				check_con_graph(graph, graph_len, mass_len); // ??
+
+				//system("dot -Tpng C:\\Users\\Александр\\Desktop\\graph\\graph.dot -o C:\\Users\\Александр\\Desktop\\graph\\graph.png");
+				//system("C:\\Users\\Александр\\Desktop\\graph\\graph.png");
 				system("pause");
 
 			}
@@ -133,5 +205,3 @@ int main()
 
 	return 0;
 }
-
-

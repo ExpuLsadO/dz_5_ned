@@ -18,32 +18,66 @@ int str_cmp(char* a, char* b)
 			break;
 		}
 	}
-	return k;
+	return k;// если слова равны то 1
 }
 
-void check_con_graph(char*** graph, int* graph_len, int len)
+void check_con_graph(char*** graph, int* str_len, char** mass, int mass_len, int graph_len)
 {
 
-	int* check = (int*)malloc(sizeof(int) * len);
-	check = {};
+	int* check = (int*)malloc(sizeof(int) * mass_len);
+	memset(check, 0, sizeof(int) * mass_len);
 	check[0] = 1;
 	int k = 1;// если все элементы проверены то = 0
-	while (k)
-	{
 
+	int z = 0;
+	
+	while (k && z <= graph_len)
+	{
+		for (int i = 0; i < graph_len; ++i)
+		{
+			if (str_cmp(graph[i][0], mass[z]))
+			{
+				for (int j = 1; j <= str_len[i]; j++) 
+					for (int g = 0; g < mass_len; g++)
+					{
+						if (str_cmp(graph[i][j], mass[g]))
+						{
+							check[g] = 1;
+						}
+					}
+				check[z] = 2;
+			}
+		}
+
+		k = 0;
+		for (int i = 0; i < mass_len; i++)
+		{
+			if (check[i] == 1) k = 1;
+		}
+		
+		z++;
 	}
+
+	int svyaz = 1;
+	for (int i = 0; i < mass_len; i++)
+	{
+		if (check[i] == 0) svyaz = 0;
+	}
+
+	if (svyaz) printf("Это связный граф\n\n");
+	else printf("Это не связный граф\n\n");
 }
 
 char** kek(int* mass_len, char** mass, char** str, int str_len)
 {
 	for (int i = 0; i <= str_len; ++i)
 	{
-		if (*mass_len = 0)
+		if (*mass_len == 0)
 		{
 			mass[*mass_len] = str[*mass_len];
 			mass = (char**)realloc(mass, sizeof(char*) * (++ * mass_len + 1));
 			mass[*mass_len] = (char*)malloc(sizeof(char));
-			
+
 		}
 		else
 		{
@@ -112,7 +146,7 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
-	char file_name[] = "C:\\Users\\Александр\\Desktop\\graph\\graph.dot";
+	char file_name[] = "C:\\Users\\aleks\\Desktop\\graph\\graph.dot";
 
 
 
@@ -183,10 +217,10 @@ int main()
 				fprintf(file, "\n}");
 				fclose(file);
 
-				check_con_graph(graph, graph_len, mass_len); // ??
+				check_con_graph(graph, graph_len, mass, mass_len, i); // ??
 
-				//system("dot -Tpng C:\\Users\\Александр\\Desktop\\graph\\graph.dot -o C:\\Users\\Александр\\Desktop\\graph\\graph.png");
-				//system("C:\\Users\\Александр\\Desktop\\graph\\graph.png");
+				system("dot -Tpng C:\\Users\\aleks\\Desktop\\graph\\graph.dot -o C:\\Users\\aleks\\Desktop\\graph\\graph.png");
+				system("C:\\Users\\aleks\\Desktop\\graph\\graph.png");
 				system("pause");
 
 			}
